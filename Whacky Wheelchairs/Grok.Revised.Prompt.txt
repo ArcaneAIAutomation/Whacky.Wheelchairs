@@ -1,0 +1,104 @@
+Game: Whacky Wheelchairs Game Development
+
+Objective:
+As a game developer specializing in pixel-art games, I need a fully functional, fun, and humorous game called Whacky Wheelchairs, designed for an HTML file that can be hosted online. The code should be clean, cross-checked, and ready to copy-paste, integrating all assets (images, audio) and mechanics as specified.
+
+Game Overview
+Title: Whacky Wheelchairs (bold, pixel font, flashing, centered at the top of the screen)  
+Resolution: 1024 x 768 pixels  
+Style: Pixel art, humorous theme of "crazy old people in wheelchairs"  
+Tone: Fun, lighthearted, and wacky
+
+Audio Setup
+Background music: Loop .\audio\background.music.mp3 continuously.  
+Allow layering of additional .mp3 files (e.g., attack sounds) without interrupting the background track.
+
+Starting Screen
+Display for 3 seconds, then transition to the Arena screen.  
+
+Features:  
+Title: Whacky Wheelchairs in large pixel font at the top.  
+Effect: Screen flashes white twice.  
+Image: Full-screen, centered .\images\First.Screen.webp (located in the ./images folder relative to the HTML file).
+Arena Screen (Main Gameplay)
+Background: Centered image .\Arena.A.webp.  
+Grid: Divide the arena into 0.5cm x 0.5cm blocks for movement and collision logic.  
+Persistent display after the starting screen.
+
+Character A: Martha
+Name: Martha  
+Health: 10 (variable: hitpoints)  
+Size: 3 blocks (variable: Size_Limit)  
+Position: Middle-left of the screen.  
+Image: .\images\CharA-Right.webp, resized to 5cm x 5cm.  
+
+UI:  
+Name at top-left, 50% opaque dark background.  
+Health bar below name, 50% opaque dark background, updates with hitpoints.
+Controls:  
+A: Move left 1 block.  
+D: Move right 1 block.  
+W: Move up 1 block.  
+S: Move down 1 block.  
+F: Attack (show .\images\CharA-Weap.webp, 4cm x 4cm, left-center of Martha for 2 seconds; play .\audio\attack.mp3).  
+G: Defend (immune to damage for 2 seconds, cooldown 2 seconds, show .\images\Block.webp, 4cm x 4cm, centered on Martha; display bold red countdown timer below health bar).
+Buttons: Attack and Defend buttons at bottom-left, flashing on keypress/touch.  
+Restrictions: Only one defend active at a time.
+
+Character B: Bob
+Name: Bob  
+Health: 10 (variable: hitpoints)  
+Size: 3 blocks (variable: Size_Limit)  
+Position: Center of the arena.  
+Image: .\images\CharB-Left.webp, resized to 5cm x 5cm.  
+UI:  
+Name at top-right, 50% opaque dark background.  
+Health bar below name, 50% opaque dark background, updates with hitpoints.
+
+Controls:  
+Left Arrow: Move left 1 block.  
+Right Arrow: Move right 1 block.  
+Up Arrow: Move up 1 block.  
+Down Arrow: Move down 1 block.  
+,: Attack (show .\images\CharB-Weap.webp, 4cm x 4cm, left-center of Bob for 2 seconds; play .\audio\attack.mp3).  
+.: Defend (immune to damage for 2 seconds, cooldown 2 seconds, show .\images\Block.webp, 4cm x 4cm, centered on Bob; display bold red countdown timer below health bar).
+Buttons: Attack and Defend buttons at bottom-right, flashing on keypress/touch.  
+Restrictions: Only one defend active at a time.
+
+Fight Mechanics
+Attack:  
+If a character is within 6 blocks of the attacker, reduce target’s hitpoints by 1 and update their health bar.  
+Screen flashes red when a character loses 1 HP.
+Audio: Restart .\audio\attack.mp3 immediately on subsequent attacks for a spam effect.  
+Collision: Characters cannot overlap or move into each other based on Size_Limit.
+Controls
+
+Movement: Smooth (not jerky) transitions between blocks.  
+UI: Touchscreen-friendly buttons at the bottom (Martha’s on left, Bob’s on right), animating on keypress/touch.  
+Visibility: Clear, readable, and clickable controls tied to their respective characters.
+Random Audio
+Play .\audio\Bob.1.mp3 or .\audio\Martha.1.mp3 randomly every 5–60 seconds, switching between them.
+Win Conditions
+Martha Wins: If Bob’s hitpoints = 0, display "Game over! Martha dominated poor old Bob RIP!" in pixel font.  
+Bob Wins: If Martha’s hitpoints = 0, display "Game over! Bob has 'beaten' Martha RIP!" in pixel font.
+Requirements
+Gameplay Suggestions: Before generating code, propose 5 detailed improvements for humor and fun (e.g., old-age-home-themed mechanics). Await my approval before proceeding.  
+Code Output: Provide complete, functional HTML/JavaScript code only when I say "Print." Save all progress until then.  
+Assets: Assume all images and audio files are in the specified folders (./images, ./audio).
+Tips to Improve Your Prompting Ability
+Your original prompt was detailed and creative, which is fantastic! However, it could benefit from a few adjustments to maximize clarity and efficiency when working with an AI like me. Here’s some feedback:
+Be Concise but Specific:  
+Your original prompt had a lot of personality (great!), but some sections were repetitive or overly verbose (e.g., repeating "Create a 50% dark background" for each character). Condense repeated instructions into a single, reusable rule (e.g., "All text has a 50% opaque dark background").
+Structure Matters:  
+Use clear headings and bullet points to break up the wall of text. This helps the AI parse your request systematically and reduces the chance of missing details.
+Avoid Ambiguity:  
+Some instructions were unclear or contradictory (e.g., "Right movement moves Martha 1 block up" — did you mean "right"?). Double-check for logical consistency.
+Group Related Ideas:  
+Combine related mechanics (e.g., all of Martha’s controls) into one section rather than scattering them. This makes it easier to follow and implement.
+Set Expectations for Output:  
+Explicitly state when and how you want the code delivered (e.g., "Print" trigger). This avoids premature responses and keeps the process interactive.
+Leverage the AI’s Strengths:  
+You asked for gameplay suggestions—awesome! To get even more out of me, you could ask for specific types of ideas (e.g., "Suggest mechanics inspired by slapstick comedy" or "Propose pixel art animations for attacks").
+Test Incrementally:  
+If possible, break big projects into smaller prompts (e.g., "Build the starting screen first," then "Add characters"). This lets you refine as you go.
+You’re off to a strong start—your creativity shines through! With a bit more focus and structure, you’ll get even smoother, more tailored results. Let me know how you’d like to proceed with Whacky Wheelchairs!

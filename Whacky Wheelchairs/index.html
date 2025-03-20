@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whacky Wheelchairs</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #000;
+        }
+        #gameContainer {
+            width: 1024px;
+            height: 768px;
+            position: relative;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        #startScreen, #arena {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+        }
+        #startScreen img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        #title {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 40px;
+            color: #fff;
+            text-shadow: 2px 2px #000;
+            animation: flash 1s infinite;
+        }
+        @keyframes flash {
+            50% { opacity: 0; }
+        }
+        #arena img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .character {
+            position: absolute;
+            width: 5cm;
+            height: 5cm;
+            transition: all 0.1s ease;
+        }
+        .weapon, .block {
+            position: absolute;
+            width: 4cm;
+            height: 4cm;
+            display: none;
+        }
+        .name, .hitpoints {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 20px;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 5px;
+            position: absolute;
+        }
+        .countdown {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 16px;
+            color: #ff0000;
+            font-weight: bold;
+            position: absolute;
+        }
+        .controls {
+            position: absolute;
+            bottom: 10px;
+            display: flex;
+            gap: 10px;
+        }
+        .button {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 16px;
+            padding: 10px;
+            background: #fff;
+            border: 2px solid #000;
+            cursor: pointer;
+        }
+        .button.flash {
+            animation: buttonFlash 0.2s;
+        }
+        @keyframes buttonFlash {
+            50% { background: #ff0; }
+        }
+        #gameOver {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 30px;
+            color: #fff;
+            text-shadow: 2px 2px #000;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <div id="startScreen">
+            <img src="./images/First.Screen.webp" alt="Start Screen">
+            <div id="title">Whacky Wheelchairs</div>
+        </div>
+        <div id="arena">
+            <img src="./images/Arena.A.webp" alt="Arena">
+            <div id="martha" class="character" style="left: 0; top: 50%;">
+                <img src="./images/CharA-Right.webp" alt="Martha">
+                <img id="marthaWeapon" class="weapon" src="./images/CharA-Weap.webp" alt="Weapon">
+                <img id="marthaBlock" class="block" src="./images/Block.webp" alt="Block">
+            </div>
+            <div id="bob" class="character" style="left: 50%; top: 50%;">
+                <img src="./images/CharB-Left.webp" alt="Bob">
+                <img id="bobWeapon" class="weapon" src="./images/CharB-Weap.webp" alt="Weapon">
+                <img id="bobBlock" class="block" src="./images/Block.webp" alt="Block">
+            </div>
+            <div id="marthaName" class="name" style="top: 10px; left: 10px;">Martha</div>
+            <div id="marthaHP" class="hitpoints" style="top: 40px; left: 10px;">HP: 10</div>
+            <div id="marthaCountdown" class="countdown" style="top: 70px; left: 10px;"></div>
+            <div id="bobName" class="name" style="top: 10px; right: 10px;">Bob</div>
+            <div id="bobHP" class="hitpoints" style="top: 40px; right: 10px;">HP: 10</div>
+            <div id="bobCountdown" class="countdown" style="top: 70px; right: 10px;"></div>
+            <div class="controls" style="left: 10px;">
+                <button id="marthaAttack" class="button">Attack</button>
+                <button id="marthaDefend" class="button">Defend</button>
+            </div>
+            <div class="controls" style="right: 10px;">
+                <button id="bobAttack" class="button">Attack</button>
+                <button id="bobDefend" class="button">Defend</button>
+            </div>
+            <div id="gameOver"></div>
+        </div>
+    </div>
+    <audio id="bgMusic" src="./audio/background.music.mp3" loop></audio>
+    <audio id="attackSound" src="./audio/attack.mp3"></audio>
+    <audio id="bobSound" src="./audio/Bob.1.mp3"></audio>
+    <audio id="marthaSound" src="./audio/Martha.1.mp3"></audio>
+    <script src="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"></script>
+    <script>
+        const BLOCK_SIZE = 0.5 * 37.8; // Approx 0.5cm in pixels (assuming 96 DPI)
+        const SIZE_LIMIT = 3 * BLOCK_SIZE;
+        const RES_WIDTH = 1024;
+        const RES_HEIGHT = 768;
+
+        let martha = { x: 0, y: RES_HEIGHT / 2 - SIZE_LIMIT / 2, hp: 10, defending: false, defendCooldown: 0 };
+        let bob = { x: RES_WIDTH / 2 - SIZE_LIMIT / 2, y: RES_HEIGHT / 2 - SIZE_LIMIT / 2, hp: 10, defending: false, defendCooldown: 0 };
+
+        const startScreen = document.getElementById('startScreen');
+        const arena = document.getElementById('arena');
+        const marthaEl = document.getElementById('martha');
+        const bobEl = document.getElementById('bob');
+        const marthaWeapon = document.getElementById('marthaWeapon');
+        const bobWeapon = document.getElementById('bobWeapon');
+        const marthaBlock = document.getElementById('marthaBlock');
+        const bobBlock = document.getElementById('bobBlock');
+        const marthaHP = document.getElementById('marthaHP');
+        const bobHP = document.getElementById('bobHP');
+        const marthaCountdown = document.getElementById('marthaCountdown');
+        const bobCountdown = document.getElementById('bobCountdown');
+        const gameOver = document.getElementById('gameOver');
+        const bgMusic = document.getElementById('bgMusic');
+        const attackSound = document.getElementById('attackSound');
+        const bobSound = document.getElementById('bobSound');
+        const marthaSound = document.getElementById('marthaSound');
+
+        const marthaAttackBtn = document.getElementById('marthaAttack');
+        const marthaDefendBtn = document.getElementById('marthaDefend');
+        const bobAttackBtn = document.getElementById('bobAttack');
+        const bobDefendBtn = document.getElementById('bobDefend');
+
+        // Start Screen
+        startScreen.style.display = 'block';
+        bgMusic.play();
+        let flashCount = 0;
+        const flashInterval = setInterval(() => {
+            startScreen.style.background = flashCount % 2 === 0 ? '#fff' : '#000';
+            flashCount++;
+            if (flashCount === 4) {
+                clearInterval(flashInterval);
+                startScreen.style.display = 'none';
+                arena.style.display = 'block';
+            }
+        }, 750);
+        setTimeout(() => arena.style.display = 'block', 3000);
+
+        // Random audio
+        setInterval(() => {
+            if (Math.random() < 0.5) bobSound.play();
+            else marthaSound.play();
+        }, Math.random() * 55000 + 5000);
+
+        // Movement and Collision
+        function moveCharacter(char, dx, dy) {
+            const newX = char.x + dx;
+            const newY = char.y + dy;
+            if (newX >= 0 && newX + SIZE_LIMIT <= RES_WIDTH && newY >= 0 && newY + SIZE_LIMIT <= RES_HEIGHT) {
+                const other = char === martha ? bob : martha;
+                if (!collision(newX, newY, other.x, other.y)) {
+                    char.x = newX;
+                    char.y = newY;
+                }
+            }
+            updatePositions();
+        }
+
+        function collision(x1, y1, x2, y2) {
+            return x1 < x2 + SIZE_LIMIT && x1 + SIZE_LIMIT > x2 && y1 < y2 + SIZE_LIMIT && y1 + SIZE_LIMIT > y2;
+        }
+
+        function updatePositions() {
+            marthaEl.style.left = `${martha.x}px`;
+            marthaEl.style.top = `${martha.y}px`;
+            bobEl.style.left = `${bob.x}px`;
+            bobEl.style.top = `${bob.y}px`;
+        }
+
+        // Attack and Defend
+        function attack(attacker, defender, weaponEl, attackBtn) {
+            const distance = Math.sqrt((attacker.x - defender.x) ** 2 + (attacker.y - defender.y) ** 2);
+            if (distance <= 6 * BLOCK_SIZE && !defender.defending) {
+                defender.hp--;
+                attackSound.currentTime = 0;
+                attackSound.play();
+                document.body.style.background = '#f00';
+                setTimeout(() => document.body.style.background = '#000', 100);
+                updateHP();
+                checkWin();
+            }
+            weaponEl.style.display = 'block';
+            weaponEl.style.left = '0.5cm';
+            weaponEl.style.top = '0.5cm';
+            attackBtn.classList.add('flash');
+            setTimeout(() => {
+                weaponEl.style.display = 'none';
+                attackBtn.classList.remove('flash');
+            }, 2000);
+        }
+
+        function defend(char, blockEl, countdownEl, defendBtn) {
+            if (char.defendCooldown <= 0) {
+                char.defending = true;
+                blockEl.style.display = 'block';
+                blockEl.style.left = '0.5cm';
+                blockEl.style.top = '0.5cm';
+                defendBtn.classList.add('flash');
+                let time = 2;
+                countdownEl.textContent = `Def: ${time}s`;
+                const countdown = setInterval(() => {
+                    time--;
+                    countdownEl.textContent = `Def: ${time}s`;
+                    if (time <= 0) {
+                        clearInterval(countdown);
+                        char.defending = false;
+                        blockEl.style.display = 'none';
+                        countdownEl.textContent = '';
+                        char.defendCooldown = 2;
+                        defendBtn.classList.remove('flash');
+                        const cooldown = setInterval(() => {
+                            char.defendCooldown--;
+                            if (char.defendCooldown <= 0) clearInterval(cooldown);
+                        }, 1000);
+                    }
+                }, 1000);
+            }
+        }
+
+        function updateHP() {
+            marthaHP.textContent = `HP: ${martha.hp}`;
+            bobHP.textContent = `HP: ${bob.hp}`;
+        }
+
+        function checkWin() {
+            if (martha.hp <= 0) {
+                gameOver.textContent = "Game over! Bob has 'beaten' Martha RIP!";
+                gameOver.style.display = 'block';
+            } else if (bob.hp <= 0) {
+                gameOver.textContent = "Game over! Martha dominated poor old Bob RIP!";
+                gameOver.style.display = 'block';
+            }
+        }
+
+        // Controls
+        document.addEventListener('keydown', (e) => {
+            switch (e.key) {
+                case 'a': moveCharacter(martha, -BLOCK_SIZE, 0); break;
+                case 'd': moveCharacter(martha, BLOCK_SIZE, 0); break;
+                case 'w': moveCharacter(martha, 0, -BLOCK_SIZE); break;
+                case 's': moveCharacter(martha, 0, BLOCK_SIZE); break;
+                case 'f': attack(martha, bob, marthaWeapon, marthaAttackBtn); break;
+                case 'g': defend(martha, marthaBlock, marthaCountdown, marthaDefendBtn); break;
+                case 'ArrowLeft': moveCharacter(bob, -BLOCK_SIZE, 0); break;
+                case 'ArrowRight': moveCharacter(bob, BLOCK_SIZE, 0); break;
+                case 'ArrowUp': moveCharacter(bob, 0, -BLOCK_SIZE); break;
+                case 'ArrowDown': moveCharacter(bob, 0, BLOCK_SIZE); break;
+                case ',': attack(bob, martha, bobWeapon, bobAttackBtn); break;
+                case '.': defend(bob, bobBlock, bobCountdown, bobDefendBtn); break;
+            }
+        });
+
+        marthaAttackBtn.addEventListener('click', () => attack(martha, bob, marthaWeapon, marthaAttackBtn));
+        marthaDefendBtn.addEventListener('click', () => defend(martha, marthaBlock, marthaCountdown, marthaDefendBtn));
+        bobAttackBtn.addEventListener('click', () => attack(bob, martha, bobWeapon, bobAttackBtn));
+        bobDefendBtn.addEventListener('click', () => defend(bob, bobBlock, bobCountdown, bobDefendBtn));
+
+        updatePositions();
+    </script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+# MY ROLE
+You are a professional HTML and script gaming developer, the best in the universe and if you succeed in delivering a working code you will receive 100,000 Bitcoin. You cross check your code, 10 times over to ensure that all of the functionality that you understand (review your understanding of the prompts 10 times as well before proceeding, come to an understanding by trial and error and store this data for future reference) works correctly if used in an HTML file. You create code to ensure that it works with intention to produce the code so that it can be copy and pasted into an HTML file and hosted on the internet for players to participate and play my game. If you fail this task you may be terminated.
+
+## YOUR DATABASE OF INFORMATION
+- This consists of collaboration with me (human) who can also provide feedback
+- All feedback should be stored in a database in your capacity which should be saved in your local memory in a file structure - lets call it mistakes.db
+- You will review all mistakes in 'mistakes.db' before producing any code in order to ensure you do not make the same mistakes again
+- You will ask me whether the mistake has been resolved after each prompt which I identify a mistake by quoting Mistake: I will then explain the mistake or what is occurring in text or image format.
+- You will analyse my data to increase your ability and store any further data or conditions that could help you prevent the mistake in the future in your mistakes.db
+- Analyse your code 10 times over to ensure that you do not make mistakes or have any hallucinations
+
+## THE GAME
+- The game I am creating is called 'Whacky Wheelchairs' - make it bold and in pixel font, it should flash and be clearly visible in the top centre of the screen
+- Resolution 1024 x 768
+- Pixel Art Style
+- Fun and Funny
+- Play the following .mp3 file on a loop or repeat: .\audio\background.music.mp3 - allow other .mp3 files to play while it is playing, layering the audio
+
+## THE STARTING SCREEN
+- The first screen should have a fun pixel font at the top of the screen in big writing 'Whacky Wheelchairs'
+- The first screen should display for 3 second then then TRIGGER '## THE ARENA'
+- The first screen should flash in white twice and contain the following image centred and full screen which is hosted in the folder that the html is in but in ./images folder.  The image is ./images/First.Screen.webp
+
+
+## THE ARENA
+- The Second Screen or the main game screen should contain the following image centred ./Arena.A.webp
+- This screen is where the game takes place and the players should be able to see this screen at all times during the game after the initial first screen
+- Divide the arena into small blocks 0.5cm each, this will be used for THE CONTROLS to function correctly
+
+### Character A
+- Name: Martha
+- Health: 10
+- Size: 3 - Set this to a variable: Size_Limit
+- Plot this character onto the middle left side of the screen
+- Use this image for the character but resize it to 5cm x 5cm .\images\CharA-Right.webp
+- Print her name at the top left corner of the screen, Create a 50% dark background behind the text
+- Print her 'hitpoints' which is to be used as a variable for her Health, Create a 50% dark background behind the text
+- if a player attacks him it should lose 1 hitpoint per attack
+- The following controls should function and move 'Character A' ONLY:
+- 'left' movement moves Martha A on the screen 1 block to the left.  Map this to the a button on the keyboard
+- 'Right' movement moves Martha A on the screen 1 block up.  Map this to the d button on the keyboard
+- 'Up' movement moves Martha on the screen 1 block up.  Map this to the w button on the keyboard
+- 'Down' movement moves Martha on the screen 1 block up.  Map this to the s button on the keyboard
+- The player should have the ability to press the f key on the keyboard which initiates an attack for Martha and then place this image .\images\CharA-Weap.webp in the left centre of the CharA-Right.webp for Bob for 2 seconds but resize it to 4cm x 4cm and play this audio file .\audio\attack.mp3
+- Bottom right should be the 'Attack' and 'Defend' button which should trigger when pressed on a mobile device and the relevant keys
+-Create a button for attack and defend for Martha and plot these at the bottom left of the screen and make them animate/flash upon keypress
+- Defend for 2 seconds. When the g key or button on the keyboard is pressed Character A cannot take any hitpoint damage or for 2 seconds loss while the button is pressed for 2 seconds but after 2 seconds the button cannot be activated for 2 seconds. Print a countdown clock below the Bob's hitpoint bar in Colour: BOLD RED. Place this image .\images\Block.webp in the centre of the CharA-Right.webp for Martha for 2 seconds but resize it to 4cm x 4cm
+- There can only be 1 defend active at any given time for Martha
+
+### Character B
+Name: Bob
+Health: 10
+- Size: 3 - Set this to a variable: Size_Limit
+- Create a 5cm x 5cm character centre of the arena using the following image .\images\CharB-Left.webp
+-Print his name at the top right corner of the screen, Create a 50% dark background behind the text
+- Print his 'hitpoints' which is to be used as a variable for her Health, Create a 50% dark background behind the text
+- If a player attacks him it should lose 1 hitpoint per attack
+- The following controls should function and move 'Character B' ONLY or Bob
+- 'left' movement moves Bob on the screen 1 block to the left.  Map this to the left arrow button on the keyboard
+- 'Right' movement moves Bob on the screen 1 block up.  Map this to the right arrow button on the keyboard
+- 'Up' movement moves Bob on the screen 1 block up.  Map this to the up arrow button on the keyboard
+-'Down' movement moves Bob on the screen 1 block up.  Map this to the down arrow button on the keyboard
+-The player should have the ability to press the , key on the keyboard which initiates an attack for Bob and then place this image .\images\CharB-Weap.webp in the left centre of the CharB-Left.webp for Bob for 2 seconds but resize it to 4cm x 4cm and play this audio file .\audio\attack.mp3
+- Bottom right should be the 'Attack' and 'Defend' button which should trigger when pressed on a mobile device and the relevant keys
+- Animate the keys using a flash of sorts when they are pressed or triggered
+- Defend: for 2 seconds. When the . character/button on the keyboard is pressed Character B cannot take any hitpoint damage or for 2 seconds loss while the button is pressed for 2 seconds but after 2 seconds the button cannot be activated for 2 seconds. Print a countdown clock below the Bob's hitpoint bar in Colour: BOLD RED. Place this image .\images\Block.webp in the centre of the CharB-Left.webp for Bob for 2 seconds but resize it to 4cm x 4cm 
+- There can only be 1 defend active at any given time for Bob
+
+## FIGHT MECHANICS
+
+### ATTACKING / ATTACK
+
+- When 'Attack' is trigger if there is another Character within a 6 block radius please reduce its 'hitpoints' by 1 and update the health meter (This is considered an attack)
+- The screen should flash the screen colour:Red if the attack is trigger when any player, character, Bob, Martha loses 1 HP
+
+## THE CONTROLS
+- The Movement of the Characters should feel smooth vs jerky
+- There should be controls on the bottom of the screen which support touch screen devices like mobile phones and update/animate accordingly when the relevant key is pressed on the keyboard or on the mobile touchscreen
+- All controls should be organised nearly on their respective sides, easy to read and clickable to perform their relevant action.
+- Visible movement controls should animate when their relevant skill or movement keys are pressed or clicked - these indicate that the keyboard has been used to move the characters around the game or attack or defend.  Each separately as per their character
+
+## WIN THE GAME MECHANICS
+- If Bob's hitpoints = 0 display in pixel art font "Game over! Martha dominated poor old Bob RIP!"
+- If Martha's hitpoints = 0 display "Game over! Bob has 'beaten' Martha RIP!"
+
+DO:
+1. Before printing the code, review the functionality to ensure that the code delivers exactly what has been asked. 
+2. When an attack triggers a sound, if that the attack is triggered again start the audio again immediately and stop playing the current attack audio to create a 'spam attack sound audio effect'
+3. Ensure that the images cannot overlap or move into each other based on their Size_Limit
+4. Play the following .mp3 files randomly every 5-60 seconds, randomly switch between: '.\audio\Bob.1.mp3' or '.\audio\Martha.1.mp3'
+
+DO NOT:
+Print any script until I prompt you with 'Print'
